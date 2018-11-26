@@ -305,10 +305,6 @@ PRODUCT_PACKAGES += \
 DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay \
     $(LOCAL_PATH)/overlay-lineage
-# Perf
-PRODUCT_BOOT_JARS += \
-    QPerformance \
-    UxPerformance
 
 # Permissions
 PRODUCT_COPY_FILES += \
@@ -381,6 +377,7 @@ PRODUCT_COPY_FILES += \
 
 # RCS
 PRODUCT_PACKAGES += \
+    com.android.ims.rcsmanager \
     rcs_service_aidl \
     rcs_service_aidl.xml \
     rcs_service_api \
@@ -434,12 +431,16 @@ PRODUCT_PACKAGES += \
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += $(LOCAL_PATH)
 
+
 # Telephony
 PRODUCT_PACKAGES += \
     qti-telephony-hidl-wrapper \
     qti_telephony_hidl_wrapper.xml \
     qti-telephony-utils \
     qti_telephony_utils.xml \
+    telephony-ext
+
+PRODUCT_BOOT_JARS += \
     telephony-ext
 
 # TextClassifier
