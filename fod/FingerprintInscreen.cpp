@@ -21,11 +21,17 @@
 #include <android-base/logging.h>
 #include <fstream>
 #include <cmath>
+#include <thread>
 
+/* Hardcoded stuffs */
 #define FP_PRESS_PATH "/sys/kernel/oppo_display/notify_fppress"
+#define DIMLAYER_PATH "/sys/kernel/oppo_display/dimlayer_hbm"
 #define HBM_PATH "/sys/kernel/oppo_display/hbm"
-#define DIM_PATH "/sys/kernel/oppo_display/dimlayer_hbm"
-#define DIM_AMOUNT_PATH "/sys/kernel/oppo_display/dim_alpha"
+#define X_POS 445
+#define Y_POS 1988
+#define FP_SIZE 190
+#define FP_BEGIN 1
+#define FP_ENDIT 0
 
 namespace {
 
@@ -48,62 +54,65 @@ static T get(const std::string& path, const T& def) {
 } // anonymous namespace
 
 namespace vendor {
-namespace pa {
+namespace lineage {
 namespace biometrics {
 namespace fingerprint {
 namespace inscreen {
 namespace V1_0 {
 namespace implementation {
 
-FingerprintInscreen::FingerprintInscreen() {
+FingerprintInscreen::FingerprintInscreen():mFingerPressed{false} {
 }
 
 Return<int32_t> FingerprintInscreen::getPositionX() {
-    return 442;
+    return X_POS;
 }
 
 Return<int32_t> FingerprintInscreen::getPositionY() {
-    return 1986;
+    return Y_POS;
 }
 
 Return<int32_t> FingerprintInscreen::getSize() {
-    return 196;
+    return FP_SIZE;
 }
 
 Return<void> FingerprintInscreen::onStartEnroll() {
-    set(HBM_PATH, 1);
-    set(DIM_PATH, 1);
     return Void();
 }
 
 Return<void> FingerprintInscreen::onFinishEnroll() {
-    set(HBM_PATH, 0);
-    set(DIM_PATH, 0);
     return Void();
 }
 
 Return<void> FingerprintInscreen::onPress() {
-    set(HBM_PATH, 1);
-    set(FP_PRESS_PATH, 1);
+    mFingerPressed = true;
+    set(DIMLAYER_PATH, FP_BEGIN);
+    set(HBM_PATH, FP_BEGIN);
+    std::thread([this]() {
+        std::this_thread::sleep_for(std::chrono::milliseconds(69));
+        if (mFingerPressed) {
+            set(FP_PRESS_PATH, FP_BEGIN);
+        }
+    }).detach();
     return Void();
 }
 
 Return<void> FingerprintInscreen::onRelease() {
-//    set(HBM_PATH, 0);
-    set(FP_PRESS_PATH, 0);
+    mFingerPressed = false;
+    set(FP_PRESS_PATH, FP_ENDIT);
+    set(DIMLAYER_PATH, FP_ENDIT);
+    set(HBM_PATH, FP_ENDIT);
     return Void();
 }
 
 Return<void> FingerprintInscreen::onShowFODView() {
-    set(DIM_PATH, 1);
-    set(HBM_PATH, 1);
     return Void();
 }
 
 Return<void> FingerprintInscreen::onHideFODView() {
-    set(HBM_PATH, 0);
-    set(FP_PRESS_PATH, 0);
-    set(DIM_PATH, 0);
+    set(HBM_PATH, FP_ENDIT);
+    set(DIMLAYER_PATH, FP_ENDIT);
+    set(FP_PRESS_PATH, FP_ENDIT);
     return Void();
 }
 
@@ -121,18 +130,16 @@ Return<void> FingerprintInscreen::setLongPressEnabled(bool) {
     return Void();
 }
 
-Return<int32_t> FingerprintInscreen::getDimAmount(int32_t) {
-    int dimAmount = get(DIM_AMOUNT_PATH, 0);
-    LOG(INFO) << "dimAmount = " << dimAmount;
-
-    return dimAmount;
+Return<int32_t> FingerprintInscreen::getDimAmount(int32_t brightness) {
+    return(int32_t)((brightness > 498) ? (255 * (1.0 - pow(brightness / 2047.0 * 430.0 / 600.0, 0.455))):
+            (255 * (1.0 - pow(brightness / 1605.0, 0.455)))); 
 }
 
 Return<bool> FingerprintInscreen::shouldBoostBrightness() {
     return false;
 }
 
-Return<void> FingerprintInscreen::setCallback(const sp<::vendor::pa::biometrics::fingerprint::inscreen::V1_0::IFingerprintInscreenCallback>& callback) {
+Return<void> FingerprintInscreen::setCallback(const sp<::vendor::lineage::biometrics::fingerprint::inscreen::V1_0::IFingerprintInscreenCallback>& callback) {
     {
         std::lock_guard<std::mutex> _lock(mCallbackLock);
         mCallback = callback;
@@ -145,5 +152,5 @@ Return<void> FingerprintInscreen::setCallback(const sp<::vendor::pa::biometrics:
 }  // namespace inscreen
 }  // namespace fingerprint
 }  // namespace biometrics
-}  // namespace pa
+}  // namespace lineage
 }  // namespace vendor
