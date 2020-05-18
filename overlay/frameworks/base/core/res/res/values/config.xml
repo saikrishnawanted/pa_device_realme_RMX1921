@@ -238,11 +238,6 @@
     <!-- Is the device capable of hot swapping an UICC Card -->
     <bool name="config_hotswapCapable">true</bool>
 
-    <!-- Screen brightness used to dim the screen while dozing in a very low power state.
-         May be less than the minimum allowed brightness setting
-         that can be set by the user. -->
-    <integer name="config_screenBrightnessDoze">19</integer>
-
     <!-- Stability requirements in milliseconds for accepting a new brightness level.  This is used
          for debouncing the light sensor.  Different constants are used to debounce the light sensor
          when adapting to brighter or darker environments.  This parameter controls how quickly
@@ -293,12 +288,12 @@
 
     <!-- If true, the doze component is not started until after the screen has been
          turned off and the screen off animation has been performed. -->
-    <bool name="config_dozeAfterScreenOffByDefault">true</bool>
+    <bool name="config_dozeAfterScreenOffByDefault">false</bool>
 
     <!-- Control whether the always on display mode is available. This should only be enabled on
          devices where the display has been tuned to be power efficient in DOZE and/or DOZE_SUSPEND
          states. -->
-    <bool name="config_dozeAlwaysOnDisplayAvailable">true</bool>
+    <bool name="config_dozeAlwaysOnDisplayAvailable">false</bool>
 
     <!-- Control whether the always on display mode is enabled by default. This value will be used
         during initialization when the setting is still null. -->
@@ -325,6 +320,7 @@
 
          Refer to autosuspend.h for details.
     -->
+    <bool name="config_powerDecoupleInteractiveModeFromDisplay">true</bool>
     <bool name="config_powerDecoupleAutoSuspendModeFromDisplay">true</bool>
 
     <!-- User activity timeout: Maximum screen dim duration in milliseconds.
@@ -606,6 +602,11 @@
          timeout expires.  May be less than the minimum allowed brightness setting
          that can be set by the user. -->
     <integer name="config_screenBrightnessDim">4</integer>
+
+    <!-- Screen brightness used to dim the screen while dozing in a very low power state.
+         May be less than the minimum allowed brightness setting
+         that can be set by the user. -->
+    <integer name="config_screenBrightnessDoze">19</integer>
 
     <!-- Height of the status bar -->
     <dimen name="status_bar_height_portrait">28.0px</dimen>
