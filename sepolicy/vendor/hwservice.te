@@ -2,3 +2,4 @@ type nfc_hwservice, hwservice_manager_type;
 allow hwservicemanager init:dir search;
 allow hwservicemanager init:file { open read };
 allow hwservicemanager init:process getattr;
+type dcs_hwservice, hwservice_manager_type;

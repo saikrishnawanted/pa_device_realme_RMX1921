@@ -12,3 +12,6 @@ genfscon sysfs /devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-00/c440000.q
 
 # Devinfo
 genfscon proc /devinfo        u:object_r:proc_devinfo:s0
+
+# Oppo display
+genfscon sysfs /kernel/oppo_display      u:object_r:sysfs_oppo_display:s0

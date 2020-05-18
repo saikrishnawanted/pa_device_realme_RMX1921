@@ -12,3 +12,6 @@ type persist_camera_file, file_type;
 
 # Devinfo
 type proc_devinfo, fs_type, proc_type;
+
+# Oppo display
+type sysfs_oppo_display, fs_type, sysfs_type;
