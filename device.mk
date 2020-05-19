@@ -181,7 +181,7 @@ PRODUCT_PACKAGES += \
 # Fingerprint
 PRODUCT_PACKAGES += \
     android.hardware.biometrics.fingerprint@2.1-service.xt \
-    lineage.biometrics.fingerprint.inscreen@1.1-service.xt \
+    vendor.lineage.biometrics.fingerprint.inscreen@1.1-service.xt \
     vendor.oppo.hardware.biometrics.fingerprint@2.1
 
 PRODUCT_COPY_FILES += \
@@ -419,7 +419,7 @@ PRODUCT_PACKAGES += \
 
 # Touch
 PRODUCT_PACKAGES += \
-    lineage.touch@1.0-service.xt
+    vendor.lineage.touch@1.0-service.xt
 
 # Trust HAL
 PRODUCT_PACKAGES += \

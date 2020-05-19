@@ -14,14 +14,15 @@
 // limitations under the License.
 
 cc_binary {
-    name: "lineage.touch@1.0-service.xt",
-    init_rc: ["lineage.touch@1.0-service.xt.rc"],
+    name: "vendor.lineage.touch@1.0-service.xt",
+    init_rc: ["vendor.lineage.touch@1.0-service.xt.rc"],
     defaults: ["hidl_defaults"],
     relative_install_path: "hw",
     srcs: [
         "TouchscreenGesture.cpp",
         "service.cpp",
     ],
+    vendor: true,
     shared_libs: [
         "libbase",
         "libbinder",
