@@ -12,7 +12,7 @@
 /dev/goodix_fp                                                                                           u:object_r:goodix_device:s0
 
 # Light Hal
-/(vendor|system/vendor)/bin/hw/android\.hardware\.light@2\.0-service\.realme_sdm710                      u:object_r:hal_light_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.light@2\.0-service\.xt                     u:object_r:hal_light_default_exec:s0
 
 # mdmreason device
 /dev/mdmreason             u:object_r:mdmreason_device:s0
