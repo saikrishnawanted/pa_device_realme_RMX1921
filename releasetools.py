@@ -1,6 +1,6 @@
 # Copyright (C) 2009 The Android Open Source Project
 # Copyright (c) 2011, The Linux Foundation. All rights reserved.
-# Copyright (C) 2017-2018 The LineageOS Project
+# Copyright (C) 2017-2020 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import hashlib
 import common
 import re
 
@@ -26,6 +25,14 @@ def IncrementalOTA_InstallEnd(info):
   OTA_InstallEnd(info)
   return
 
+def FullOTA_Assertions(info):
+  AddTrustZoneAssertion(info, info.input_zip)
+  return
+
+def IncrementalOTA_Assertions(info):
+  AddTrustZoneAssertion(info, info.target_zip)
+  return
+
 def AddImage(info, basename, dest):
   path = "IMAGES/" + basename
   if path not in info.input_zip.namelist():
@@ -33,10 +40,20 @@ def AddImage(info, basename, dest):
 
   data = info.input_zip.read(path)
   common.ZipWriteStr(info.output_zip, basename, data)
+  info.script.Print("Patching {} image unconditionally...".format(dest.split('/')[-1]))
   info.script.AppendExtra('package_extract_file("%s", "%s");' % (basename, dest))
 
 def OTA_InstallEnd(info):
-  info.script.Print("Patching firmware images...")
   AddImage(info, "dtbo.img", "/dev/block/bootdevice/by-name/dtbo")
+  AddImage(info, "vbmeta.img", "/dev/block/bootdevice/by-name/vbmeta")
   return
 
+def AddTrustZoneAssertion(info, input_zip):
+  android_info = info.input_zip.read("OTA/android-info.txt")
+  m = re.search(r'require\s+version-trustzone\s*=\s*(\S+)', android_info)
+  if m:
+    versions = m.group(1).split('|')
+    if len(versions) and '*' not in versions:
+      cmd = 'assert(RMX1921.verify_trustzone(' + ','.join(['"%s"' % tz for tz in versions]) + ') == "1" || abort("ERROR: This package requires firmware from an Android 10 based Realme UI build. Please upgrade firmware and retry!"););'
+      info.script.AppendExtra(cmd)
+  return
