@@ -19,7 +19,7 @@ cc_binary {
     init_rc: ["vendor.lineage.biometrics.fingerprint.inscreen@1.0-service.xt.rc"],
     defaults: ["hidl_defaults"],
     srcs: [
-	"service.cpp",
+        "service.cpp",
         "FingerprintInscreen.cpp",
     ],
     shared_libs: [
@@ -33,4 +33,12 @@ cc_binary {
         "vendor.lineage.biometrics.fingerprint.inscreen@1.0",
     ],
     vendor: true,
+}
+
+cc_library_static {
+    name: "libfod_extension.xt",
+    srcs: ["FodExtension.cpp"],
+    include_dirs: [
+        "frameworks/native/services/surfaceflinger/CompositionEngine/include"
+    ],
 }
