@@ -69,7 +69,6 @@ private:
     sensors_poll_device_1_t *mSensorDevice;
     std::mutex mPollLock;
 
-
     int32_t mSensorHandleProximityWakeup;
     int32_t mSensorHandleProximity;
 

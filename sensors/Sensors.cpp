@@ -18,7 +18,7 @@
 #include <sensors/convert.h>
 #include "multihal.h"
 
-#include <time.h> 
+#include <time.h>
 #include <android-base/logging.h>
 
 #include <sys/stat.h>
@@ -129,10 +129,10 @@ Return<void> Sensors::getSensorsList(getSensorsList_cb _hidl_cb) {
 
         convertFromSensor(*src, dst);
 
-	    if (dst->typeAsString == "qti.sensor.proximity_fake") {
-            dst->type = SensorType::PROXIMITY;
-            mSensorHandleProximity = dst->sensorHandle; 
-            dst->typeAsString = "";
+	 if (dst->typeAsString == "qti.sensor.proximity_fake") {
+             dst->type = SensorType::PROXIMITY;
+             mSensorHandleProximity = dst->sensorHandle;
+             dst->typeAsString = "";
         }
 
         // For proximity Wakeup
@@ -354,6 +354,7 @@ void Sensors::convertFromSensorEvents(
         convertFromSensorEvent(src, dst);
 
         //dev-harsh1998 add delay to fix proximity event updates
+        // https://www.reddit.com/r/learnprogramming/comments/732hma/is_it_possible_to_make_a_while_loop_for_a_certain
         if (isProximity(dst->sensorHandle)) {
             if (dst->u.scalar == 0){ 
             time_t start = clock();
