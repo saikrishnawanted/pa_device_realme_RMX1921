@@ -1,2 +1,0 @@
-allow thermal-engine sysfs:dir { read open };
-allow thermal-engine sysfs_devfreq:dir { search read };
