@@ -26,9 +26,9 @@
 /* Hardcoded stuffs */
 #define PRESSED "/sys/kernel/oppo_display/notify_fppress"
 #define DIMLAYER "/sys/kernel/oppo_display/dimlayer_hbm"
-#define X 445
-#define Y 1988
-#define SIZE 190
+#define X 442
+#define Y 1969
+#define SIZE 196
 #define ON 1
 #define OFF 0
 
