@@ -99,7 +99,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Camera
 PRODUCT_PRODUCT_PROPERTIES += \
-   persist.camera.HAL3.enabled=1
+   persist.camera.HAL3.enabled=1 \
+   ro.camera.hfr.enable=1 \
+   ro.camera.relight.enable=0 \
+   ro.camera.attr.detect.enable=1 \
+   ro.camera.temperature.limit=470 
 
 # Dalvik
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -165,7 +169,12 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.dbg.volte_avail_ovr=1 \
     persist.dbg.vt_avail_ovr=1 \
-    persist.dbg.wfc_avail_ovr=1
+    persist.dbg.wfc_avail_ovr=1 \
+    persist.radio.custom_exp_ecc=1 \
+    persist.vendor.radio.process_sups_ind=1 \
+    persist.vendor.radio.data_con_rprt=1 \
+    persist.data.iwlan.enable=true \
+    persist.data.iwlan.rekey=4294967295
 
 # Keystore
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -180,3 +189,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Qualcomm System Daemon
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.vendor.qcomsysd.enabled=1
+
+# Sensors
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.vendor.sensors.enable.mag_filter=true \
+    ro.display.underscreen.lightsensor.support=1 \
+    ro.lcd.display.screen.underlightsensor.region=624,28,672,76 \
+    persist.sys.oppo.fusionlight=true \
+    persist.sys.oppo.proximity=true \
+    ro.qti.sensors.wu=false
