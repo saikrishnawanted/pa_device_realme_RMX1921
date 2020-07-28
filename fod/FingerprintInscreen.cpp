@@ -63,7 +63,7 @@ namespace inscreen {
 namespace V1_0 {
 namespace implementation {
 
-FingerprintInscreen::FingerprintInscreen():mFingerPressed{false} {
+FingerprintInscreen::FingerprintInscreen():isDreamState{false} {
 }
 
 Return<int32_t> FingerprintInscreen::getPositionX() {
@@ -87,33 +87,42 @@ Return<void> FingerprintInscreen::onFinishEnroll() {
 }
 
 Return<void> FingerprintInscreen::onPress() {
-    mFingerPressed = true;
+    if(isDreamState){
     set(DIMLAYER, ON);
     std::thread([this]() {
-        std::this_thread::sleep_for(std::chrono::milliseconds(39));
-        if (mFingerPressed) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(60));
+        if (isDreamState) {
             set(PRESSED, ON);
         }
     }).detach();
+    } else {
+    set(PRESSED,ON);
+    }
     return Void();
 }
 
 Return<void> FingerprintInscreen::onRelease() {
-    mFingerPressed = false;
     set(PRESSED, OFF);
+    if(isDreamState)
     set(DIMLAYER, OFF);
     return Void();
 }
 
 Return<void> FingerprintInscreen::onShowFODView() {
     if(get(DOZE_STATUS, OFF)) {
+    isDreamState = true;
     set(NOTIFY_BLANK_PATH, ON);
     set(AOD_MODE_PATH, ON);
+    } else {
+    isDreamState = false;
+    set(DIMLAYER,ON);
     }
     return Void();
 }
 
 Return<void> FingerprintInscreen::onHideFODView() {
+    if(!isDreamState)
+    set(DIMLAYER, OFF);
     return Void();
 }
 
@@ -130,7 +139,7 @@ Return<void> FingerprintInscreen::setLongPressEnabled(bool) {
 }
 
 Return<int32_t> FingerprintInscreen::getDimAmount(int32_t /* brightness */) {
-    return 0; 
+    return 0;
 }
 
 Return<bool> FingerprintInscreen::shouldBoostBrightness() {
