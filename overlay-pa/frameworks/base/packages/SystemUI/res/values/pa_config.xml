@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 /*
-**
-** Copyright 2007 The Android Open Source Project
+** Copyright 2019, The Paranoid Android Project
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -17,12 +16,12 @@
 ** limitations under the License.
 */
 -->
-<resources>
-    <!-- IDs for each color mode. The values must match the corresponding constants in
-         android.view.Display -->
-    <integer-array name="color_mode_ids">
-        <item>0</item>
-        <item>-1</item>
-        <item>-1</item>
-    </integer-array>
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- Color of the FOD view -->
+    <color name="config_fodColor">#00ffffff</color>
+
+
+    <!-- Whether to dim the FOD icon -->
+    <bool name="config_fodIconDim">true</bool>
 </resources>
